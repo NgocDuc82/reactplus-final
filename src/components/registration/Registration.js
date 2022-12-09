@@ -9,7 +9,17 @@ import { Input, Button, Form } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 
 import { postRegister } from "../../service/User";
-import { schema } from "../common/schema/Schema";
+
+import * as yup from "yup";
+
+const schema = yup.object().shape({
+  name: yup.string().required(),
+  password: yup.string().required(),
+  email: yup
+    .string()
+    .required()
+    .matches(/[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/),
+});
 
 const Registration = () => {
   const navigate = useNavigate();
@@ -17,7 +27,6 @@ const Registration = () => {
   const [dataTasks, setDataTasks] = useState();
   const {
     handleSubmit,
-    reset,
     formState: { isValid, errors },
     control,
   } = useForm({
@@ -34,8 +43,8 @@ const Registration = () => {
         password: dataTasks?.password,
         name: dataTasks?.name,
       });
-      if(res){
-        navigate('/login')
+      if (res) {
+        navigate("/login");
       }
     }
   };
